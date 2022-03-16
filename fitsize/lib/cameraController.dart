@@ -107,80 +107,81 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 }
 
 // A widget that displays the picture taken by the user.
-class DisplayPictureScreen extends StatelessWidget {
+class DisplayPictureScreen extends StatefulWidget {
   final String imagePath;
 
-  const DisplayPictureScreen({Key? key, required this.imagePath})
+  DisplayPictureScreen({Key? key, required this.imagePath})
       : super(key: key);
 
+  @override
+  State<DisplayPictureScreen> createState() => _DisplayPictureScreenState(imagePath);
+}
 
-  void _showOverlay(BuildContext context) async {
 
-    // Declaring and Initializing OverlayState
-    // and OverlayEntry objects
-    OverlayState? overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry;
-    overlayEntry = OverlayEntry(builder: (context) {
 
-      // You can return any widget you like here
-      // to be displayed on the Overlay
-      return Positioned(
-        left: MediaQuery.of(context).size.width * 0.2,
-        top: MediaQuery.of(context).size.height * 0.3,
-        child: Container(
-          width: MediaQuery.of(context).size.width * 0.8,
-          child: Stack(
-              children: [
-                GestureDetector(
-                  child: Image.asset('graphics/images/position_marker.png',
-                    colorBlendMode: BlendMode.multiply,
-                    height: 45,
-                    width: 45,
-                  ),
-                  onLongPress: () => print('LongPress'),
-                ),
-                Positioned(
-                  top: MediaQuery.of(context).size.height * 0.13,
-                  left: MediaQuery.of(context).size.width * 0.13,
-                  child: Material(
-                    color: Colors.transparent,
-                    child: Text(
-                      '1',
-                      style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.height * 0.03,
-                          color: Colors.green),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-        ),
-      );
-    });
-    // Inserting the OverlayEntry into the Overlay
-    overlayState!.insert(overlayEntry);
+class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
+  final double maxPointCount = 8;
+  double pointCount = 0;
+  List<Widget> points = <Widget>[];
+  // List<(double, double)> pointsPositions = <(double, double)>[];
+  String imagePath = '';
+
+  _DisplayPictureScreenState(String this.imagePath);
+
+  void addNewPoint(detail) {
+    {
+      if(pointCount <= maxPointCount) {
+        pointCount++;
+        var appBarHeight = AppBar().preferredSize.height;
+        var newPoint = Positioned(
+          left: detail.globalPosition.dx - (45 / 2),
+          top: detail.globalPosition.dy - 45 - appBarHeight,
+          child: Image.asset(
+            'graphics/images/position_marker_' + pointCount.toStringAsFixed(0) +
+                '.png',
+            colorBlendMode: BlendMode.multiply,
+            height: 45,
+            width: 45,
+          ),
+        );
+        print(pointCount);
+        if (pointCount == maxPointCount) {
+          print('You can now Validate !');
+        }
+
+        setState(() {
+          points.add(newPoint);
+        });
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Placez les points comme sur l\'exemple')),
-      // The image is stored as a file on the device. Use the `Image.file`
-      // constructor with the given path to display the image.
-      body: Center(
-        child : InkWell(
-          onTap: () => _showOverlay(context),
-          // onTapDown: (TapDownDetails details) => _showOverlay(context, details),
-          child : ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(2.0),
-              topRight: Radius.circular(2.0),
-            ),
-            child: Image.file(File(imagePath)),
-          ),
-        ),
-      ),
+        appBar: AppBar(
+            title: const Text('Placez les points comme sur l\'exemple')),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children : [Stack(
+            children: <Widget>[
+              GestureDetector(
+                child: Center(
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(5.0),
+                      topRight: Radius.circular(5.0),
+                    ),
+                    child: Image.file(File(imagePath)),
+                  ),
+                ),
+                onTapUp: (detail) => addNewPoint(detail),
+              )
+            ] +
+                points,
+          )]
+        )
     );
   }
 }
-

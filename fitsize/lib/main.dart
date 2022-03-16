@@ -168,22 +168,6 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text("Se connecter", style: TextStyle(fontSize: 12.0,),
               ),
             ),
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: const TextStyle(fontSize: 20),
-              ),
-              onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  '/nowayRoute',
-                  //arguments: ScreenArguments('arg-title', 'arg-message'),
-                  arguments: <String, String>{
-                    'title':"Deuxième page",
-                  },
-                );
-              },
-              child: const Text('not found page'),
-            ),
           ],
         ),
       ),

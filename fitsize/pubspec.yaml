@@ -69,6 +69,16 @@ flutter:
     - graphics/images/appareil-photo.png
     - graphics/images/broche-de-localisation.png
     - graphics/images/position_marker.png
+    - graphics/images/position_marker_1.png
+    - graphics/images/position_marker_2.png
+    - graphics/images/position_marker_3.png
+    - graphics/images/position_marker_4.png
+    - graphics/images/position_marker_5.png
+    - graphics/images/position_marker_6.png
+    - graphics/images/position_marker_7.png
+    - graphics/images/position_marker_8.png
+    - graphics/images/position_marker_9.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
