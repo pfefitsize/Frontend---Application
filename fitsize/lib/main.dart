@@ -156,9 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Colors.blue,
               textColor: Colors.white,
               padding: EdgeInsets.all(8.0),
-              onPressed: () async {
-                var url = Uri.parse('https://example.com/whatsit/create');
-                var response = await http.post(url, body: {'name': 'doodle', 'color': 'blue'});
+              onPressed: () {
                 Navigator.pushNamed(
                   context,
                   '/home',
