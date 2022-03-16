@@ -117,25 +117,34 @@ class DisplayPictureScreen extends StatefulWidget {
   State<DisplayPictureScreen> createState() => _DisplayPictureScreenState(imagePath);
 }
 
+class Coordonates<String, Int> {
+  final String x;
+  final Int y;
+
+  Coordonates(this.x, this.y);
+}
 
 
 class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   final double maxPointCount = 8;
   double pointCount = 0;
   List<Widget> points = <Widget>[];
-  // List<(double, double)> pointsPositions = <(double, double)>[];
+  List<Coordonates> pointsPositions = <Coordonates>[];
   String imagePath = '';
+  bool _isButtonDisabled = true;
 
   _DisplayPictureScreenState(String this.imagePath);
 
   void addNewPoint(detail) {
     {
-      if(pointCount <= maxPointCount) {
+      if(pointCount <= maxPointCount-1) {
         pointCount++;
         var appBarHeight = AppBar().preferredSize.height;
+        var x = detail.globalPosition.dx;
+        var y = detail.globalPosition.dy - appBarHeight;
         var newPoint = Positioned(
-          left: detail.globalPosition.dx - (45 / 2),
-          top: detail.globalPosition.dy - 45 - appBarHeight,
+          left: x - (45 / 2),
+          top: y - 45,
           child: Image.asset(
             'graphics/images/position_marker_' + pointCount.toStringAsFixed(0) +
                 '.png',
@@ -144,12 +153,15 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
             width: 45,
           ),
         );
+
         print(pointCount);
         if (pointCount == maxPointCount) {
+          _isButtonDisabled = false;
           print('You can now Validate !');
         }
 
         setState(() {
+          pointsPositions.add(Coordonates(x, y-2));
           points.add(newPoint);
         });
       }
@@ -180,7 +192,28 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
               )
             ] +
                 points,
-          )]
+          ),
+            FlatButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6.0),
+                  side: BorderSide(color: Colors.blue)),
+              color: Colors.blue,
+              textColor: Colors.white,
+              padding: EdgeInsets.all(8.0),
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  '/home',
+                  //arguments: ScreenArguments('arg-title', 'arg-message'),
+                  arguments: <String, String>{
+                    'title':"Deuxième page",
+                  },
+                );
+              },
+              child: const Text("Suivant", style: TextStyle(fontSize: 12.0,),
+              ),
+            ),
+          ]
         )
     );
   }

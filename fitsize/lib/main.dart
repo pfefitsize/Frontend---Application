@@ -11,6 +11,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 
 
@@ -155,7 +156,9 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Colors.blue,
               textColor: Colors.white,
               padding: EdgeInsets.all(8.0),
-              onPressed: () {
+              onPressed: () async {
+                var url = Uri.parse('https://example.com/whatsit/create');
+                var response = await http.post(url, body: {'name': 'doodle', 'color': 'blue'});
                 Navigator.pushNamed(
                   context,
                   '/home',
