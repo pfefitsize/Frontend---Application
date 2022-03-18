@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Model {
-  String name='Default name';
+  String name='T-shirt noir Volcom';
   Image dressType = Image.asset('graphics/images/t-shirt.png',
     height: 80,
     width: 80,);
@@ -32,9 +32,10 @@ class MyModels extends StatelessWidget {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
                 color: Colors.white30,
                 child: InkWell(
-                  onTap: () => print("ciao"),
+                  onTap: () => print("Visualisation de ce modèle"),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    // crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       ClipRRect(
                         borderRadius: const BorderRadius.only(
@@ -63,7 +64,7 @@ class MyModels extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mes Models'),
+        title: Text('Mes Modèles'),
       ),
       body: Center(
         child: SingleChildScrollView(

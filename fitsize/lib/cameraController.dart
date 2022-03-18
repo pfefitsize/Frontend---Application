@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
@@ -119,8 +120,8 @@ class DisplayPictureScreen extends StatefulWidget {
 }
 
 class Coordonates<String, Int> {
-  final Int x;
-  final Int y;
+  final Double x;
+  final Double y;
 
   Coordonates(this.x, this.y);
 }
@@ -158,10 +159,8 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
           ),
         );
 
-        print(pointCount);
         if (pointCount == maxPointCount) {
           _isButtonDisabled = false;
-          print('You can now Validate !');
         }
 
         setState(() {
@@ -261,11 +260,29 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                   });
 
                   //This is the call to the backend to send the points
-                  var url = Uri.parse('https://example.com/whatsit/create');
+                  var url = Uri.parse('http://127.0.0.1:8000/polls/usermodel/savedimensions/');
+                  var dimensions = "";
+                  var i = 0;
+                  for (Coordonates monPoint in pointsPositions){
+                    if (i==0 || i==2){
+                      dimensions = dimensions+(monPoint.x.toString())+ "," + (monPoint.y.toString());
+                    }else {
+                      dimensions = "," + dimensions+(monPoint.x.toString())+ "," + (monPoint.y.toString());
+                    }
+                    if (i==1) {
+                      dimensions = dimensions + "KP";
+                    }
+                    i++;
+                  }
                   var response = await http.post(
-                      url, body: {'name': 'doodle', 'color': 'blue'});
+                      url, body: {
+                    "name": "TShirt",
+                    "dimensions": dimensions,
+                    "user": 1,
+                    "clothingtype": 3
+                  });
 
-                  // if (response.isOk) {
+                  if (response.statusCode < 300) {
                     Navigator.pushNamed(
                       context,
                       '/home',
@@ -274,7 +291,8 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                         'title': "Deuxième page",
                       },
                     );
-                  // }
+                    print("Success !");
+                  }
                 },
               ),
             ],
