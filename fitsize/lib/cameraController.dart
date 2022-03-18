@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
@@ -120,8 +119,8 @@ class DisplayPictureScreen extends StatefulWidget {
 }
 
 class Coordonates<String, Int> {
-  final Double x;
-  final Double y;
+  final Int x;
+  final Int y;
 
   Coordonates(this.x, this.y);
 }
@@ -159,8 +158,10 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
           ),
         );
 
+        print(pointCount);
         if (pointCount == maxPointCount) {
           _isButtonDisabled = false;
+          print('You can now Validate !');
         }
 
         setState(() {
@@ -286,7 +287,6 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                     Navigator.pushNamed(
                       context,
                       '/home',
-                      //arguments: ScreenArguments('arg-title', 'arg-message'),
                       arguments: <String, String>{
                         'title': "Deuxième page",
                       },
