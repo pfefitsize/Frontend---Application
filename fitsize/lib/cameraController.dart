@@ -118,9 +118,9 @@ class DisplayPictureScreen extends StatefulWidget {
   State<DisplayPictureScreen> createState() => _DisplayPictureScreenState(imagePath);
 }
 
-class Coordonates<String, Int> {
-  final Int x;
-  final Int y;
+class Coordonates<Double, Int> {
+  final Double x;
+  final Double y;
 
   Coordonates(this.x, this.y);
 }
@@ -129,8 +129,8 @@ class Coordonates<String, Int> {
 class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   final double maxPointCount = 8;
   double pointCount = 0;
-  double referenceObjectLength = 0;
-  double valueInputDialog = 0;
+  String referenceObjectLength = "";
+  String valueInputDialog = "";
   List<Widget> points = <Widget>[];
   List<Coordonates> pointsPositions = <Coordonates>[];
   String imagePath = '';
@@ -229,7 +229,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
             content: TextField(
               onChanged: (value) {
                 setState(() {
-                  valueInputDialog = value as double;
+                  valueInputDialog = value;
                 });
               },
               keyboardType: TextInputType.number,
@@ -266,15 +266,18 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                   var i = 0;
                   for (Coordonates monPoint in pointsPositions){
                     if (i==0 || i==2){
-                      dimensions = dimensions+(monPoint.x.toString())+ "," + (monPoint.y.toString());
+                      dimensions = dimensions+(monPoint.x.toStringAsFixed(1))+ "," + (monPoint.y.toStringAsFixed(1));
                     }else {
-                      dimensions = "," + dimensions+(monPoint.x.toString())+ "," + (monPoint.y.toString());
+                      dimensions = "," + dimensions+(monPoint.x.toStringAsFixed(1))+ "," + (monPoint.y.toStringAsFixed(1));
                     }
                     if (i==1) {
+                      dimensions = "," + dimensions+referenceObjectLength;
                       dimensions = dimensions + "KP";
                     }
                     i++;
                   }
+
+                  //Cette partie n'as pas pu être entièrement testée
                   var response = await http.post(
                       url, body: {
                     "name": "TShirt",
